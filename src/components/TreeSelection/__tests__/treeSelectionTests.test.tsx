@@ -1,12 +1,12 @@
 import React from 'react';
 import { render } from '@testing-library/react-native';
-import Button from '../Button';
+import TreeSelect from '../TreeSelect';
 
 jest.useFakeTimers();
 
-describe('Button component', () => {
+describe('Tree View component', () => {
   it('Match Snapshot', () => {
-    const { toJSON } = render(<Button text="Template" />);
+    const { toJSON } = render(<TreeSelect treeData={[]} />);
     expect(toJSON()).toMatchSnapshot();
   });
 });
