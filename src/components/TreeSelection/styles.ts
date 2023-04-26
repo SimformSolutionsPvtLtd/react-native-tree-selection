@@ -4,41 +4,45 @@ import { fontScale, scale, verticalScale } from '../../helpers';
 
 const styles = StyleSheet.create({
   container: {
-    flex: 1,
-    alignItems: 'center',
-    justifyContent: 'center',
+    alignItems: 'flex-start',
     backgroundColor: Colors.backgroundColor,
   },
   text: {
     color: Colors.white,
     fontSize: fontScale(18),
   },
-  innerText: {
-    color: Colors.white,
-    fontSize: fontScale(15),
-    alignSelf: 'center',
-  },
-  seperator: {
-    height: verticalScale(0.5),
-  },
   parentStyles: {
     backgroundColor: Colors.itemColor,
     marginTop: verticalScale(5),
-    paddingVertical: verticalScale(5),
-    paddingHorizontal: scale(15),
+    paddingRight: scale(10),
     borderRadius: scale(8),
     alignItems: 'center',
     alignContent: 'center',
-    justifyContent: 'center',
-    borderWidth: scale(2),
-    borderColor: Colors.black,
+    justifyContent: 'flex-start',
+    flexDirection: 'row',
   },
   innerContainer: {
-    marginLeft: scale(20),
-    overflow: 'hidden',
+    paddingLeft: scale(20),
   },
-  containerStyle: {
-    paddingVertical: verticalScale(50),
+  chevronContainer: {
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  childrenContainerStyles: {
+    backgroundColor: Colors.itemColor,
+    paddingRight: scale(10),
+    borderRadius: scale(8),
+    marginTop: verticalScale(5),
+    alignItems: 'center',
+    flexDirection: 'row',
+  },
+  renderContainer: {
+    alignItems: 'flex-start',
+  },
+  iconView: {
+    height: fontScale(32),
+    width: fontScale(32),
+    tintColor: Colors.white,
   },
 });
 
