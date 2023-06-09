@@ -24,19 +24,19 @@ export interface TreeDataTypes extends GenericTreeDataType {
  * Tree data prop types.
  */
 export type TreeSelectTypes = {
-  treeData?: TreeDataTypes[];
-  childField?: string;
-  titleField?: string;
-  renderDownArrowComponent?: JSX.Element;
-  renderRightArrowComponent?: JSX.Element;
-  renderCheckboxComponent?: JSX.Element;
-  renderUnCheckboxComponent?: JSX.Element;
+  data?: TreeDataTypes[];
+  childKey?: string;
+  titleKey?: string;
+  renderArrowOpen?: JSX.Element;
+  renderArrowClosed?: JSX.Element;
+  renderSelect?: JSX.Element;
+  renderUnSelect?: JSX.Element;
   autoSelectParents?: boolean;
   autoSelectChildren?: boolean;
   autoExpandable?: boolean;
-  onPressParent?: (item: TreeDataTypes) => void;
-  onPressChild?: (item: TreeDataTypes) => void;
-  onCheckBox?: (item: TreeDataTypes[]) => void;
+  onParentPress?: (item: TreeDataTypes) => void;
+  onChildPress?: (item: TreeDataTypes) => void;
+  onCheckBoxPress?: (item: TreeDataTypes[]) => void;
   containerStyles?: StyleProp<ViewStyle>;
   leftIconStyles?: StyleProp<ImageStyle>;
   rightIconStyles?: StyleProp<ImageStyle>;
