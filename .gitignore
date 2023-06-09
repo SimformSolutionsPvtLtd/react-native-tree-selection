@@ -59,6 +59,7 @@ buck-out/
 # Ruby / CocoaPods
 /ios/Pods/
 /vendor/bundle/
+coverage
 
 # generated
 lib

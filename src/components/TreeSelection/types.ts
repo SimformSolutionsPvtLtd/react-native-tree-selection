@@ -1,43 +1,47 @@
-export type SubcatagoriesAlternatData = {
-  length: number;
-  id: number;
-  value: string;
-};
+import type { ImageStyle, StyleProp, TextStyle, ViewStyle } from 'react-native';
 
-export type RecursiveSubCatagory = {
-  subcategory: TreeDataTypes | SubcatagoriesAlternatData;
-};
+/**
+ * Tree data types.
+ */
 
-export type TreeDataTypes = {
-  treeData: {
-    isExpandable?: boolean;
-    category_id: number;
-    category_name: string;
-    subcategory: RecursiveSubCatagory;
-  };
-  length: number;
-};
+interface GenericTreeDataType {
+  [key: string]:
+    | TreeDataTypes[]
+    | string
+    | number
+    | boolean
+    | undefined
+    | TreeDataTypes;
+}
 
-export type SubcategoryDataTypes = {
-  length: number;
-  isExpanded: boolean;
-  subcategory: TreeDataTypes | SubcatagoriesAlternatData;
-};
-
-export type IItems = {
-  category_name: string;
-  category_id: string;
+export interface TreeDataTypes extends GenericTreeDataType {
   isExpanded?: boolean;
-  value: string;
-  subcategory: SubcategoryDataTypes;
-};
+  isSelected?: boolean;
+  parent?: TreeDataTypes;
+}
 
-export type ItemTypes = {
-  item: IItems;
-};
-
+/**
+ * Tree data prop types.
+ */
 export type TreeSelectTypes = {
-  treeData: Array<Object>;
-  parentOnPress: ([]) => void;
-  childOnPress: ({}) => void;
+  treeData?: TreeDataTypes[];
+  childField?: string;
+  titleField?: string;
+  renderDownArrowComponent?: JSX.Element;
+  renderRightArrowComponent?: JSX.Element;
+  renderCheckboxComponent?: JSX.Element;
+  renderUnCheckboxComponent?: JSX.Element;
+  autoSelectParents?: boolean;
+  autoSelectChildren?: boolean;
+  autoExpandable?: boolean;
+  onPressParent?: (item: TreeDataTypes) => void;
+  onPressChild?: (item: TreeDataTypes) => void;
+  onCheckBox?: (item: TreeDataTypes[]) => void;
+  containerStyles?: StyleProp<ViewStyle>;
+  leftIconStyles?: StyleProp<ImageStyle>;
+  rightIconStyles?: StyleProp<ImageStyle>;
+  parentContainerStyles?: StyleProp<ViewStyle>;
+  parentTextStyles?: StyleProp<TextStyle>;
+  childContainerStyles?: StyleProp<ViewStyle>;
+  childTextStyles?: StyleProp<TextStyle>;
 };
