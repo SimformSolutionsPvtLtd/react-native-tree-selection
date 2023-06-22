@@ -11,14 +11,14 @@ const App = () => {
   return (
     <View style={styles.container}>
       <TreeSelect
-        treeData={StaticData}
-        onPressParent={(item: TreeDataTypes) => {
+        data={StaticData}
+        onParentPress={(item: TreeDataTypes) => {
           console.log('onPressParent', item);
         }}
-        onPressChild={(item: TreeDataTypes) => {
+        onChildPress={(item: TreeDataTypes) => {
           console.log('onPressChild', item);
         }}
-        onCheckBox={(item: TreeDataTypes[]) => {
+        onCheckBoxPress={(item: TreeDataTypes[]) => {
           console.log('onCheckBox', item);
         }}
       />

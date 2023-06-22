@@ -9,29 +9,27 @@ jest.useFakeTimers();
 
 describe('Tree View component', () => {
   it('Match Snapshot', () => {
-    const { toJSON } = render(<TreeSelect treeData={StaticData} />);
+    const { toJSON } = render(<TreeSelect data={StaticData} />);
     expect(toJSON()).toMatchSnapshot();
   });
   it('Match without data Snapshot', () => {
     const { toJSON } = render(
-      <TreeSelect onPressParent={() => {}} onPressChild={() => {}} />
+      <TreeSelect onParentPress={() => {}} onChildPress={() => {}} />
     );
     expect(toJSON()).toMatchSnapshot();
   });
   it('Match Snapshot dummy isExpanded data else path', () => {
     const { toJSON } = render(
       <TreeSelect
-        treeData={StaticData}
-        onPressParent={() => {}}
-        onPressChild={() => {}}
+        data={StaticData}
+        onParentPress={() => {}}
+        onChildPress={() => {}}
       />
     );
     expect(toJSON()).toMatchSnapshot();
   });
   it('Match without onPress Snapshot', () => {
-    const { toJSON, getByTestId } = render(
-      <TreeSelect treeData={StaticData} />
-    );
+    const { toJSON, getByTestId } = render(<TreeSelect data={StaticData} />);
     const buttonGlobal = getByTestId('Electronics-parent');
     fireEvent.press(buttonGlobal);
     const buttonParent = getByTestId('Mobile-parent');
@@ -49,8 +47,8 @@ describe('Tree View component', () => {
   it('Match SnapshotLeft Icon valid JSX', () => {
     const { toJSON } = render(
       <TreeSelect
-        renderDownArrowComponent={<Image source={Icons.open} />}
-        treeData={StaticData}
+        renderArrowOpen={<Image source={Icons.open} />}
+        data={StaticData}
       />
     );
     expect(toJSON()).toMatchSnapshot();
@@ -58,7 +56,7 @@ describe('Tree View component', () => {
   it('resolves Parent onPress ', () => {
     const fn = jest.fn();
     const { toJSON, getByTestId } = render(
-      <TreeSelect onPressParent={fn} treeData={StaticData} />
+      <TreeSelect onParentPress={fn} data={StaticData} />
     );
     const buttonParent = getByTestId('Electronics-parent');
     fireEvent.press(buttonParent);
@@ -69,8 +67,8 @@ describe('Tree View component', () => {
     const fn = jest.fn();
     const { toJSON, getByTestId } = render(
       <TreeSelect
-        onCheckBox={fn}
-        treeData={StaticData}
+        onCheckBoxPress={fn}
+        data={StaticData}
         autoSelectParents={false}
       />
     );
@@ -86,7 +84,7 @@ describe('Tree View component', () => {
   it('resolves Parent onPress to expand and unexpand ', () => {
     const fn = jest.fn();
     const { toJSON, getByTestId } = render(
-      <TreeSelect onPressParent={fn} treeData={StaticData} />
+      <TreeSelect onParentPress={fn} data={StaticData} />
     );
     const buttonParent = getByTestId('Electronics-parent');
     fireEvent.press(buttonParent);
@@ -100,11 +98,7 @@ describe('Tree View component', () => {
     const fn = jest.fn();
     const childValue = 'data';
     const { toJSON, getByTestId } = render(
-      <TreeSelect
-        onPressParent={fn}
-        treeData={StaticData}
-        childField={childValue}
-      />
+      <TreeSelect onParentPress={fn} data={StaticData} childKey={childValue} />
     );
     const buttonGlobal = getByTestId('Electronics-parent');
     fireEvent.press(buttonGlobal);

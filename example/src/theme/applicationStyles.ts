@@ -5,7 +5,7 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     margin: moderateScale(20),
-    marginBottom: verticalScale(100),
+    marginBottom: verticalScale(10),
   },
   text: {
     marginTop: verticalScale(50),
