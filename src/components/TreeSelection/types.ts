@@ -1,4 +1,10 @@
-import type { ImageStyle, StyleProp, TextStyle, ViewStyle } from 'react-native';
+import type {
+  ImageSourcePropType,
+  ImageStyle,
+  StyleProp,
+  TextStyle,
+  ViewStyle,
+} from 'react-native';
 
 /**
  * Tree data types.
@@ -45,3 +51,8 @@ export type TreeSelectTypes = {
   childContainerStyles?: StyleProp<ViewStyle>;
   childTextStyles?: StyleProp<TextStyle>;
 };
+
+export interface CustomImageProps {
+  source: ImageSourcePropType;
+  style?: StyleProp<ImageStyle>;
+}
