@@ -1,4 +1,13 @@
-import { cloneDeep } from 'lodash';
+import {
+  cloneDeep,
+  isArray,
+  isEmpty,
+  isEqual,
+  isNull,
+  isObject,
+  isString,
+  isUndefined,
+} from 'lodash';
 import React, { useEffect, useState } from 'react';
 import {
   FlatList,
@@ -11,9 +20,13 @@ import {
 import { Icons } from '../../assets';
 import { StaticData, Strings } from '../../constants';
 import styles from './styles';
-import type { TreeDataTypes, TreeSelectTypes } from './types';
+import type { CustomImageProps, TreeDataTypes, TreeSelectTypes } from './types';
 
 let selectItem: TreeDataTypes[] = [];
+
+export const CustomImage = ({ source, style }: CustomImageProps) => {
+  return <Image source={source} style={[styles.iconView, style]} />;
+};
 
 const TreeSelect = ({
   data,
@@ -48,7 +61,7 @@ const TreeSelect = ({
   }, [data]);
 
   useEffect(() => {
-    childKey === titleKey && console.warn(Strings.samePropsError);
+    isEqual(childKey, titleKey) && console.warn(Strings.samePropsError);
   }, [childKey, titleKey]);
 
   /**
@@ -70,8 +83,8 @@ const TreeSelect = ({
     if (
       autoSelectChildren &&
       item[childKey] &&
-      typeof item[childKey] === 'object' &&
-      item[childKey] !== null
+      isObject(item[childKey]) &&
+      !isNull(item[childKey])
     ) {
       (item[childKey] as Array<TreeDataTypes>)?.map((child: TreeDataTypes) =>
         onSelect(child)
@@ -89,8 +102,8 @@ const TreeSelect = ({
     if (
       autoSelectChildren &&
       item[childKey] &&
-      typeof item[childKey] === 'object' &&
-      item[childKey] !== null
+      isObject(item[childKey]) &&
+      !isNull(item[childKey])
     ) {
       (item[childKey] as Array<TreeDataTypes>)?.map((child: TreeDataTypes) =>
         onUnSelect(child)
@@ -112,11 +125,11 @@ const TreeSelect = ({
    * This @selectParentItems function will call when checkbox value is change`s and its update that parent item and reflected in UI.
    */
   const selectParentItems = (item: TreeDataTypes) => {
-    if (((item?.[childKey] as Array<TreeDataTypes>) ?? [])?.length !== 0) {
+    if ((!isEmpty(item?.[childKey]) || item?.[childKey]) ?? [].length === 0) {
       const check = (item[childKey] as Array<TreeDataTypes>)?.filter(
         (child: TreeDataTypes) => !child?.isSelected
       );
-      item.isSelected = check?.length === 0;
+      item.isSelected = isEmpty(check);
     }
     item?.parent && selectParentItems(item?.parent);
     reload();
@@ -130,8 +143,8 @@ const TreeSelect = ({
       if (item.isSelected) {
         selectItem.push(item);
       }
-      typeof item?.[childKey] !== 'string' &&
-        item?.[childKey] !== null &&
+      !isString(item?.[childKey]) &&
+        !isNull(item[childKey]) &&
         selectChildrenItems((item?.[childKey] as Array<TreeDataTypes>) ?? []);
     });
   };
@@ -160,10 +173,7 @@ const TreeSelect = ({
         return renderSelect;
       } else {
         return (
-          <Image
-            source={Icons.checkboxChecked}
-            style={[styles.iconView, leftIconStyles]}
-          />
+          <CustomImage source={Icons.checkboxChecked} style={leftIconStyles} />
         );
       }
     } else {
@@ -171,9 +181,9 @@ const TreeSelect = ({
         return renderUnSelect;
       } else {
         return (
-          <Image
+          <CustomImage
             source={Icons.checkboxUnchecked}
-            style={[styles.iconView, leftIconStyles]}
+            style={leftIconStyles}
           />
         );
       }
@@ -185,23 +195,13 @@ const TreeSelect = ({
       if (React.isValidElement(renderArrowOpen)) {
         return renderArrowOpen;
       } else {
-        return (
-          <Image
-            source={Icons.open}
-            style={[styles.iconView, rightIconStyles]}
-          />
-        );
+        return <CustomImage source={Icons.open} style={rightIconStyles} />;
       }
     } else {
       if (React.isValidElement(renderArrowClosed)) {
         return renderArrowClosed;
       } else {
-        return (
-          <Image
-            source={Icons.close}
-            style={[styles.iconView, rightIconStyles]}
-          />
-        );
+        return <CustomImage source={Icons.close} style={rightIconStyles} />;
       }
     }
   };
@@ -221,10 +221,11 @@ const TreeSelect = ({
    *               All the styling between @children and @parent goes here.
    */
   const renderTree = ({ item }: { item: TreeDataTypes }) => {
-    if (!item?.isExpanded) {
+    if (isUndefined(item?.isExpanded)) {
       item.isExpanded = false;
     }
-    if (!item?.isSelected) {
+
+    if (isUndefined(item?.isSelected)) {
       item.isSelected = false;
     }
 
@@ -234,15 +235,16 @@ const TreeSelect = ({
          * If titleField is not an string value then throw error
          */}
         {item[titleKey] &&
-          !(item[titleKey] as 'string') &&
+          isString(!item[titleKey]) &&
           console.error(Strings.textFieldTypeIssue)}
         {/**
          * Part I.
          */}
         {item[titleKey] &&
-          typeof item[titleKey] === 'string' &&
+          isString(item[titleKey]) &&
           item[childKey] &&
-          (item[childKey] as Array<TreeDataTypes>)?.length > 0 && (
+          isArray(item[childKey]) &&
+          !isEmpty(item[childKey]) && (
             <View style={styles.renderContainer}>
               <TouchableOpacity
                 testID={`${item[titleKey]}-parent`}
@@ -261,7 +263,7 @@ const TreeSelect = ({
                 <Text style={[styles.text, parentTextStyles]}>
                   {item[titleKey] as string}
                 </Text>
-                {typeof item[childKey] === 'object' && (
+                {isObject(item[childKey]) && (
                   <View style={styles.chevronContainer}>
                     {renderOpenCloseIcon(item?.isExpanded)}
                   </View>
@@ -273,8 +275,8 @@ const TreeSelect = ({
          * Part II.
          */}
         {item[titleKey] &&
-          typeof item[titleKey] === 'string' &&
-          ((item?.[childKey] as Array<TreeDataTypes>) ?? [])?.length === 0 && (
+          isString(item[titleKey]) &&
+          isEmpty(item?.[childKey]) && (
             <TouchableOpacity
               testID={`${item[titleKey]}-child`}
               style={[styles.childrenContainerStyles, childContainerStyles]}
@@ -295,7 +297,7 @@ const TreeSelect = ({
         {/**
          * Part III.
          */}
-        {item[childKey] !== null && item?.isExpanded && (
+        {!isNull(item[childKey]) && item?.isExpanded && (
           <View style={styles.innerContainer}>
             <FlatList
               data={item[childKey] as Array<TreeDataTypes>}
