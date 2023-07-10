@@ -1,4 +1,4 @@
-import Strings from './strings';
-import { StaticData } from './staticData';
+import Strings from './Strings';
+import { StaticData } from './StaticData';
 
 export { Strings, StaticData };

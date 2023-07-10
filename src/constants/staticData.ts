@@ -144,30 +144,3 @@ export const StaticData: TreeDataTypes[] = [
     ],
   },
 ];
-
-export const data = [
-  {
-    title: 'Cloth',
-    data: [],
-  },
-  {
-    title: 'Watches',
-    data: [],
-  },
-  {
-    title: 'Footwear',
-    data: [],
-  },
-  {
-    title: 'Cloth',
-    data: [],
-  },
-  {
-    title: 'Watches',
-    data: [],
-  },
-  {
-    title: 'Footwear',
-    data: [],
-  },
-];
