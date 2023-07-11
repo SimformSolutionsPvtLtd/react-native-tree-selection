@@ -8,7 +8,7 @@ import {
   isString,
   isUndefined,
 } from 'lodash';
-import React, { useEffect, useState } from 'react';
+import React, { useEffect } from 'react';
 import {
   FlatList,
   Image,
@@ -18,15 +18,85 @@ import {
   View,
 } from 'react-native';
 import { Icons } from '../../assets';
-import { StaticData, Strings } from '../../constants';
+import { Strings } from '../../constants';
 import styles from './styles';
-import type { CustomImageProps, TreeDataTypes, TreeSelectTypes } from './types';
+import type {
+  CustomImageProps,
+  ChildItemTypes,
+  ParentItemTypes,
+  TreeDataTypes,
+  TreeSelectTypes,
+} from './types';
+import useTreeSelect from './useTreeSelect';
 
-let selectItem: TreeDataTypes[] = [];
-
-export const CustomImage = ({ source, style }: CustomImageProps) => {
+const CustomImage = ({ source, style }: CustomImageProps) => {
   return <Image source={source} style={[styles.iconView, style]} />;
 };
+
+const ParentItem = ({
+  item,
+  parentContainerStyles,
+  parentTextStyles,
+  onPressCheckbox,
+  showChildren,
+  renderIcon,
+  renderOpenCloseIcon,
+  titleKey,
+  childKey,
+}: ParentItemTypes) => (
+  <View style={styles.renderContainer}>
+    <TouchableOpacity
+      testID={`${item[titleKey]}-parent`}
+      onPress={() => showChildren(item)}
+      style={parentContainerStyles ?? styles.parentStyles}>
+      <>
+        <TouchableOpacity
+          testID={`${item[titleKey]}-press`}
+          onPress={() => {
+            onPressCheckbox(item);
+          }}
+          style={styles.chevronContainer}>
+          {renderIcon(item?.isSelected)}
+        </TouchableOpacity>
+      </>
+      <Text style={[styles.text, parentTextStyles]}>
+        {item[titleKey] as string}
+      </Text>
+      {isObject(item[childKey]) && (
+        <View style={styles.chevronContainer}>
+          {renderOpenCloseIcon(item?.isExpanded ?? false)}
+        </View>
+      )}
+    </TouchableOpacity>
+  </View>
+);
+
+const ChildItem = ({
+  item,
+  childContainerStyles,
+  childTextStyles,
+  onPressCheckbox,
+  titleKey,
+  onChildPress,
+  renderIcon,
+}: ChildItemTypes) => (
+  <TouchableOpacity
+    testID={`${item[titleKey]}-child`}
+    style={[styles.childrenContainerStyles, childContainerStyles]}
+    onPress={() => onChildPress(item)}>
+    <TouchableOpacity
+      onPress={() => {
+        onPressCheckbox(item);
+      }}
+      testID={`${item[titleKey]}-press`}
+      style={styles.chevronContainer}>
+      {renderIcon(item?.isSelected)}
+    </TouchableOpacity>
+    <Text style={[styles.text, childTextStyles]}>
+      {item[titleKey] as string}
+    </Text>
+  </TouchableOpacity>
+);
 
 const TreeSelect = ({
   data,
@@ -50,122 +120,25 @@ const TreeSelect = ({
   renderSelect,
   renderUnSelect,
 }: TreeSelectTypes) => {
-  const [refresh, setRefresh] = useState(false);
-
-  const [listData, setListData] = useState<TreeDataTypes[]>(
-    cloneDeep(data ?? StaticData)
-  );
+  const { listData, setListData, refresh, onPressCheckbox, showChildren } =
+    useTreeSelect({
+      data,
+      onCheckBoxPress,
+      autoSelectParents,
+      autoSelectChildren,
+      childKey,
+      autoExpandable,
+      onParentPress,
+    });
 
   useEffect(() => {
     data && setListData(cloneDeep(data));
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [data]);
 
   useEffect(() => {
     isEqual(childKey, titleKey) && console.warn(Strings.samePropsError);
   }, [childKey, titleKey]);
-
-  /**
-   * This @selectAll function will call when selectAll Parents items.
-   */
-  const selectAll = (item: TreeDataTypes) => {
-    // Select all parent items.
-    if (autoSelectParents && item?.parent) {
-      selectParentItems(item?.parent);
-    }
-  };
-
-  /**
-   * This @onSelect function will call when clicked on checkbox.
-   */
-  const onSelect = (item: TreeDataTypes) => {
-    item.isSelected = true;
-    selectAll(item);
-    if (
-      autoSelectChildren &&
-      item[childKey] &&
-      isObject(item[childKey]) &&
-      !isNull(item[childKey])
-    ) {
-      (item[childKey] as Array<TreeDataTypes>)?.map((child: TreeDataTypes) =>
-        onSelect(child)
-      );
-    }
-    reload();
-  };
-
-  /**
-   * This @onUnSelect function will call when checked again checkbox.
-   */
-  const onUnSelect = (item: TreeDataTypes) => {
-    item.isSelected = false;
-    selectAll(item);
-    if (
-      autoSelectChildren &&
-      item[childKey] &&
-      isObject(item[childKey]) &&
-      !isNull(item[childKey])
-    ) {
-      (item[childKey] as Array<TreeDataTypes>)?.map((child: TreeDataTypes) =>
-        onUnSelect(child)
-      );
-    }
-    reload();
-  };
-
-  /**
-   * This @reload function will call model value update with isExpanded & isSelected value.
-   */
-  const reload = () => {
-    setRefresh(!refresh);
-    selectItem = [];
-    selectChildrenItems(listData);
-  };
-
-  /**
-   * This @selectParentItems function will call when checkbox value is change`s and its update that parent item and reflected in UI.
-   */
-  const selectParentItems = (item: TreeDataTypes) => {
-    if ((!isEmpty(item?.[childKey]) || item?.[childKey]) ?? [].length === 0) {
-      const check = (item[childKey] as Array<TreeDataTypes>)?.filter(
-        (child: TreeDataTypes) => !child?.isSelected
-      );
-      item.isSelected = isEmpty(check);
-    }
-    item?.parent && selectParentItems(item?.parent);
-    reload();
-  };
-
-  /**
-   * This @selectChildrenItems function will call when children's value update and reflected in UI.
-   */
-  const selectChildrenItems = (childData: TreeDataTypes[]) => {
-    childData?.map((item: TreeDataTypes) => {
-      if (item.isSelected) {
-        selectItem.push(item);
-      }
-      !isString(item?.[childKey]) &&
-        !isNull(item[childKey]) &&
-        selectChildrenItems((item?.[childKey] as Array<TreeDataTypes>) ?? []);
-    });
-  };
-
-  /**
-   * showChildren called when you click on any @string key.
-   *
-   * It will manipulate the @boolean isExpanded key.
-   */
-  const showChildren = (item: TreeDataTypes) => {
-    item.isExpanded = !item?.isExpanded;
-    onParentPress(item);
-    reload();
-  };
-
-  const onPressCheckbox = (item: TreeDataTypes) => {
-    if (!item?.isSelected && autoExpandable)
-      item.isExpanded = !item?.isSelected;
-    !item?.isSelected ? onSelect(item) : onUnSelect(item);
-    onCheckBoxPress(selectItem);
-  };
 
   const renderIcon = (status: boolean) => {
     if (status) {
@@ -232,12 +205,6 @@ const TreeSelect = ({
     return (
       <>
         {/**
-         * If titleField is not an string value then throw error
-         */}
-        {item[titleKey] &&
-          isString(!item[titleKey]) &&
-          console.error(Strings.textFieldTypeIssue)}
-        {/**
          * Part I.
          */}
         {item[titleKey] &&
@@ -245,31 +212,17 @@ const TreeSelect = ({
           item[childKey] &&
           isArray(item[childKey]) &&
           !isEmpty(item[childKey]) && (
-            <View style={styles.renderContainer}>
-              <TouchableOpacity
-                testID={`${item[titleKey]}-parent`}
-                onPress={() => showChildren(item)}
-                style={parentContainerStyles ?? styles.parentStyles}>
-                <>
-                  <TouchableOpacity
-                    testID={`${item[titleKey]}-press`}
-                    onPress={() => {
-                      onPressCheckbox(item);
-                    }}
-                    style={styles.chevronContainer}>
-                    {renderIcon(item?.isSelected)}
-                  </TouchableOpacity>
-                </>
-                <Text style={[styles.text, parentTextStyles]}>
-                  {item[titleKey] as string}
-                </Text>
-                {isObject(item[childKey]) && (
-                  <View style={styles.chevronContainer}>
-                    {renderOpenCloseIcon(item?.isExpanded)}
-                  </View>
-                )}
-              </TouchableOpacity>
-            </View>
+            <ParentItem
+              item={item}
+              parentContainerStyles={parentContainerStyles}
+              parentTextStyles={parentTextStyles}
+              onPressCheckbox={onPressCheckbox}
+              showChildren={showChildren}
+              renderIcon={renderIcon}
+              renderOpenCloseIcon={renderOpenCloseIcon}
+              titleKey={titleKey}
+              childKey={childKey}
+            />
           )}
         {/**
          * Part II.
@@ -277,22 +230,15 @@ const TreeSelect = ({
         {item[titleKey] &&
           isString(item[titleKey]) &&
           isEmpty(item?.[childKey]) && (
-            <TouchableOpacity
-              testID={`${item[titleKey]}-child`}
-              style={[styles.childrenContainerStyles, childContainerStyles]}
-              onPress={() => onChildPress(item)}>
-              <TouchableOpacity
-                onPress={() => {
-                  onPressCheckbox(item);
-                }}
-                testID={`${item[titleKey]}-press`}
-                style={styles.chevronContainer}>
-                {renderIcon(item?.isSelected)}
-              </TouchableOpacity>
-              <Text style={[styles.text, childTextStyles]}>
-                {item[titleKey] as string}
-              </Text>
-            </TouchableOpacity>
+            <ChildItem
+              item={item}
+              childContainerStyles={childContainerStyles}
+              childTextStyles={childTextStyles}
+              onPressCheckbox={onPressCheckbox}
+              titleKey={titleKey}
+              onChildPress={onChildPress}
+              renderIcon={renderIcon}
+            />
           )}
         {/**
          * Part III.

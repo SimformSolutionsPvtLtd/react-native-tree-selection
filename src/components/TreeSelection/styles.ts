@@ -1,21 +1,20 @@
 import { StyleSheet } from 'react-native';
-import { Colors } from '../../theme';
-import { fontScale, scale, verticalScale } from '../../helpers';
+import { Colors, verticalScale, moderateScale, scale } from '../../theme';
 
 const styles = StyleSheet.create({
   container: {
     alignItems: 'flex-start',
-    backgroundColor: Colors.backgroundColor,
+    backgroundColor: Colors.white,
   },
   text: {
     color: Colors.white,
-    fontSize: fontScale(18),
+    fontSize: moderateScale(18),
   },
   parentStyles: {
-    backgroundColor: Colors.itemColor,
+    backgroundColor: Colors.parentContainerColor,
     marginTop: verticalScale(5),
     paddingRight: scale(10),
-    borderRadius: scale(8),
+    borderRadius: moderateScale(8),
     alignItems: 'center',
     alignContent: 'center',
     justifyContent: 'flex-start',
@@ -29,9 +28,9 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
   },
   childrenContainerStyles: {
-    backgroundColor: Colors.itemColor,
+    backgroundColor: Colors.parentContainerColor,
     paddingRight: scale(10),
-    borderRadius: scale(8),
+    borderRadius: moderateScale(8),
     marginTop: verticalScale(5),
     alignItems: 'center',
     flexDirection: 'row',
@@ -40,8 +39,8 @@ const styles = StyleSheet.create({
     alignItems: 'flex-start',
   },
   iconView: {
-    height: fontScale(32),
-    width: fontScale(32),
+    height: moderateScale(32),
+    width: moderateScale(32),
     tintColor: Colors.white,
   },
 });
