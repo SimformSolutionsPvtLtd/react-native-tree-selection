@@ -116,7 +116,7 @@ const App = () => {
     <TreeSelect
       data={treeData}
       childKey="data"
-      textKey="title"
+      titleKey="title"
       onParentPress={onParentPress}
       onChildPress={onChildPress}
       onCheckBoxPress={onCheckBoxPress}

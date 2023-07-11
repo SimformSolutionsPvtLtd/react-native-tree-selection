@@ -21,8 +21,8 @@ import { Icons } from '../../assets';
 import { Strings } from '../../constants';
 import styles from './styles';
 import type {
-  CustomImageProps,
   ChildItemTypes,
+  CustomImageProps,
   ParentItemTypes,
   TreeDataTypes,
   TreeSelectTypes,
