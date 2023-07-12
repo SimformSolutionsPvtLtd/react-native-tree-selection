@@ -6,6 +6,7 @@ const styles = StyleSheet.create({
     flex: 1,
     margin: moderateScale(20),
     marginBottom: verticalScale(10),
+    alignItems: 'flex-start',
   },
   text: {
     marginTop: verticalScale(50),

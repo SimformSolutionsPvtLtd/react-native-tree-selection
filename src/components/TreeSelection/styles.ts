@@ -2,10 +2,6 @@ import { StyleSheet } from 'react-native';
 import { Colors, verticalScale, moderateScale, scale } from '../../theme';
 
 const styles = StyleSheet.create({
-  container: {
-    alignItems: 'flex-start',
-    backgroundColor: Colors.white,
-  },
   text: {
     color: Colors.white,
     fontSize: moderateScale(18),

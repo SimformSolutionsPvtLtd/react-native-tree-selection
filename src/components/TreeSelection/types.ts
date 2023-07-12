@@ -4,6 +4,7 @@ import type {
   StyleProp,
   TextStyle,
   ViewStyle,
+  FlatListProps,
 } from 'react-native';
 
 /**
@@ -44,13 +45,17 @@ export type TreeSelectTypes = Partial<{
   onParentPress: (item: TreeDataTypes) => void;
   onChildPress: (item: TreeDataTypes) => void;
   onCheckBoxPress: (item: TreeDataTypes[]) => void;
-  containerStyles: StyleProp<ViewStyle>;
   leftIconStyles: StyleProp<ImageStyle>;
   rightIconStyles: StyleProp<ImageStyle>;
   parentContainerStyles: StyleProp<ViewStyle>;
   parentTextStyles: StyleProp<TextStyle>;
   childContainerStyles: StyleProp<ViewStyle>;
   childTextStyles: StyleProp<TextStyle>;
+  touchableActiveOpacity: number;
+  flatListProps: Omit<
+    FlatListProps<any>,
+    'data' | 'renderItem' | 'keyExtractor' | 'extraData'
+  >;
 }>;
 
 export interface CustomImageProps {
@@ -65,7 +70,8 @@ export interface ChildItemTypes {
   onPressCheckbox: (item: TreeDataTypes) => void;
   titleKey: string;
   onChildPress: (item: TreeDataTypes) => void;
-  renderIcon: any;
+  renderIcon: (isSelected: boolean, type: string) => JSX.Element;
+  touchableActiveOpacity: number;
 }
 
 export interface ParentItemTypes {
@@ -74,10 +80,10 @@ export interface ParentItemTypes {
   parentTextStyles: StyleProp<TextStyle>;
   onPressCheckbox: (item: TreeDataTypes) => void;
   showChildren: (item: TreeDataTypes) => void;
-  renderIcon: any;
-  renderOpenCloseIcon: any;
+  renderIcon: (isSelected: boolean, type?: string) => JSX.Element;
   titleKey: string;
   childKey: string;
+  touchableActiveOpacity: number;
 }
 
 export interface TreeSelectHookTypes {

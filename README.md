@@ -2,11 +2,11 @@
 
 # react-native-tree-selection
 
-# [![npm version](https://img.shields.io/badge/npm%20package-0.0.1-orange)](https://www.npmjs.org/package/react-native-tree-selections) [![Android](https://img.shields.io/badge/Platform-Android-green?logo=android)](https://www.android.com) [![iOS](https://img.shields.io/badge/Platform-iOS-green?logo=apple)](https://developer.apple.com/ios) [![MIT](https://img.shields.io/badge/License-MIT-green)](https://opensource.org/licenses/MIT)
+[![react-native-tree-selection on npm](https://img.shields.io/npm/v/react-native-tree-selection.svg?style=flat)](https://www.npmjs.com/package/react-native-tree-selection) [![react-native-tree-selection downloads](https://img.shields.io/npm/dm/react-native-tree-selection)](https://www.npmtrends.com/react-native-tree-selection) [![react-native-tree-selection install size](https://packagephobia.com/badge?p=react-native-tree-selection)](https://packagephobia.com/result?p=react-native-tree-selection) [![Android](https://img.shields.io/badge/Platform-Android-green?logo=android)](https://www.android.com) [![iOS](https://img.shields.io/badge/Platform-iOS-green?logo=apple)](https://developer.apple.com/ios) [![MIT](https://img.shields.io/badge/License-MIT-green)](https://opensource.org/licenses/MIT)
 
 ---
 
-Introducing the Hierarchical Tree Select Control, a high-performance and lightweight library designed to effortlessly render select components with hierarchical tree data. This versatile control not only facilitates the display of work selection but also empowers users to make their own selections.
+Introducing the Hierarchical Tree Select Control, a high-performance and lightweight library designed to effortlessly render select components with hierarchical tree data. This versatile control not only facilitates the display of work selection but also empowers users to make their own selection.
 
 It is simple to use and fully customizable. It works on both android and iOS platforms.
 
@@ -22,9 +22,16 @@ It is simple to use and fully customizable. It works on both android and iOS pla
 
 ---
 
-## Usage and Example
+## Quick Access
 
-[Installation](#installation) | [Tree-selection](#tree-selection) | [Properties](#properties) | [Example code](#example) | [License](#license)
+- [Installation](#installation)
+- [Tree-selection Data](#tree-data-format)
+- [Usage and Examples](#usage)
+- [Properties](#properties)
+- [Example Code](#example)
+- [License](#license)
+
+## Getting Started 🔧
 
 # Installation
 
@@ -86,7 +93,7 @@ const treeData: TreeDataTypes[] = [
 ];
 ```
 
-#### Basic Usage
+#### Usage
 
 ```jsx
 <TreeSelect
@@ -132,27 +139,28 @@ export default App;
 
 ---
 
-| Prop                  | Default | Type                      | Description                                                                                                                                                                                                                                                 |
-| :-------------------- | :------ | :------------------------ | :---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| data                  | -       | [Data](#tree-data-format) | An array of objects representing multiple data items organized in a tree structure. Each object can contain various types of data and can be extended to include additional information. This format allows for flexible data manipulation and integration. |
-| childKey              | data    | string                    | Specifies the name of the property in each node object that contains the children to display.                                                                                                                                                               |
-| titleKey              | title   | string                    | Specifies the name of the property in each node object that contains the title to display.                                                                                                                                                                  |
-| onParentPress         | -       | function                  | A callback function that is called when a parent node is clicked.                                                                                                                                                                                           |
-| onChildPress          | -       | function                  | A callback function that is called when a child node is clicked.                                                                                                                                                                                            |
-| onCheckBoxPress       | -       | function                  | A callback function that is called when a checkbox is clicked.                                                                                                                                                                                              |
-| rightIconStyles       | -       | ImageStyle                | Checkbox image style                                                                                                                                                                                                                                        |
-| leftIconStyles        | -       | ImageStyle                | Arrow image style                                                                                                                                                                                                                                           |
-| parentContainerStyles | -       | ViewStyle                 | Style for Parent Container                                                                                                                                                                                                                                  |
-| childContainerStyles  | -       | TextStyle                 | Style for Child Container                                                                                                                                                                                                                                   |
-| parentTextStyles      | -       | TextStyle                 | Text Styles for Parent                                                                                                                                                                                                                                      |
-| childTextStyles       | -       | TextStyle                 | Text Styles for Child                                                                                                                                                                                                                                       |
-| containerStyles       | -       | ViewStyle                 | To change style of root view.                                                                                                                                                                                                                               |
-| autoSelectParents     | true    | Boolean                   | Parents will gets selected when all the children are selected.                                                                                                                                                                                              |
-| autoSelectChildren    | true    | Boolean                   | Children will gets selected when parent is selected.                                                                                                                                                                                                        |
-| renderArrowOpen       | -       | ImagePropType             | Change icon for Arrow when parent expands.                                                                                                                                                                                                                  |
-| renderArrowClosed     | -       | ImagePropType             | Change icon for checkbox when checkbox is selected.                                                                                                                                                                                                         |
-| renderSelect          | -       | ImagePropType             | Change icon for checkbox when checkbox is selected.                                                                                                                                                                                                         |
-| renderUnSelect        | -       | ImagePropType             | Change icon for checkbox when checkbox is unselected.                                                                                                                                                                                                       |
+| Prop                   | Default | Type                                                             | Description                                                                                                                                                                                                                                                 |
+| :--------------------- | :------ | :--------------------------------------------------------------- | :---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| data                   | -       | [Data](#tree-data-format)                                        | An array of objects representing multiple data items organized in a tree structure. Each object can contain various types of data and can be extended to include additional information. This format allows for flexible data manipulation and integration. |
+| childKey               | data    | string                                                           | Specifies the name of the property in each node object that contains the children to display.                                                                                                                                                               |
+| titleKey               | title   | string                                                           | Specifies the name of the property in each node object that contains the title to display.                                                                                                                                                                  |
+| onParentPress          | -       | function                                                         | A callback function that is called when a parent node is clicked.                                                                                                                                                                                           |
+| onChildPress           | -       | function                                                         | A callback function that is called when a child node is clicked.                                                                                                                                                                                            |
+| onCheckBoxPress        | -       | function                                                         | A callback function that is called when a checkbox is clicked.                                                                                                                                                                                              |
+| rightIconStyles        | -       | ImageStyle                                                       | Checkbox image style                                                                                                                                                                                                                                        |
+| leftIconStyles         | -       | ImageStyle                                                       | Arrow image style                                                                                                                                                                                                                                           |
+| parentContainerStyles  | -       | ViewStyle                                                        | Style for Parent Container                                                                                                                                                                                                                                  |
+| childContainerStyles   | -       | TextStyle                                                        | Style for Child Container                                                                                                                                                                                                                                   |
+| parentTextStyles       | -       | TextStyle                                                        | Text Styles for Parent                                                                                                                                                                                                                                      |
+| childTextStyles        | -       | TextStyle                                                        | Text Styles for Child                                                                                                                                                                                                                                       |
+| touchableActiveOpacity | 0.7     | activeOpacity                                                    | activeOpacity style for Touchable.                                                                                                                                                                                                                          |
+| flatListProps          | -       | FlatListProps<[ArrayData](#tree-data-format)>(#tree-data-format) | Provide <a href="https://reactnative.dev/docs/flatlist#props">FlatList props</a>.                                                                                                                                                                           |
+| autoSelectParents      | true    | Boolean                                                          | Parents will gets selected when all the children are selected.                                                                                                                                                                                              |
+| autoSelectChildren     | true    | Boolean                                                          | Children will gets selected when parent is selected.                                                                                                                                                                                                        |
+| renderArrowOpen        | -       | ImagePropType                                                    | Change icon for Arrow when parent expands.                                                                                                                                                                                                                  |
+| renderArrowClosed      | -       | ImagePropType                                                    | Change icon for checkbox when checkbox is selected.                                                                                                                                                                                                         |
+| renderSelect           | -       | ImagePropType                                                    | Change icon for checkbox when checkbox is selected.                                                                                                                                                                                                         |
+| renderUnSelect         | -       | ImagePropType                                                    | Change icon for checkbox when checkbox is unselected.                                                                                                                                                                                                       |
 
 ---
 
