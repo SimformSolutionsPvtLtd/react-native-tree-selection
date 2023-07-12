@@ -1,15 +1,12 @@
 import React from 'react';
-import { View } from 'react-native';
-import {
-  StaticData,
-  TreeDataTypes,
-  TreeSelect,
-} from 'react-native-tree-selection';
+import { SafeAreaView } from 'react-native';
+import { TreeDataTypes, TreeSelect } from 'react-native-tree-selection';
+import { StaticData } from './constants/StaticData';
 import { styles } from './theme';
 
 const App = () => {
   return (
-    <View style={styles.container}>
+    <SafeAreaView style={styles.container}>
       <TreeSelect
         data={StaticData}
         onParentPress={(item: TreeDataTypes) => {
@@ -22,7 +19,7 @@ const App = () => {
           console.log('onCheckBox', item);
         }}
       />
-    </View>
+    </SafeAreaView>
   );
 };
 

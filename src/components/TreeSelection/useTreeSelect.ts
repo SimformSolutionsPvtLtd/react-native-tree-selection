@@ -1,4 +1,4 @@
-import { cloneDeep, isEmpty, isNull, isObject, isString } from 'lodash';
+import { cloneDeep, isNull, isObject } from 'lodash';
 import { useState } from 'react';
 import { StaticData } from '../../constants';
 import type { TreeDataTypes, TreeSelectHookTypes } from './types';
@@ -15,7 +15,6 @@ const useTreeSelect = ({
   autoExpandable,
 }: TreeSelectHookTypes) => {
   const [refresh, setRefresh] = useState(false);
-
   const [listData, setListData] = useState<TreeDataTypes[]>(
     cloneDeep(data ?? StaticData)
   );
@@ -31,10 +30,10 @@ const useTreeSelect = ({
   };
 
   /**
-   * This @onSelect function will call when clicked on checkbox.
+   * This @onSelectOrUnselect function will call when clicked on checkbox or call when checked checkbox clicked again.
    */
-  const onSelect = (item: TreeDataTypes) => {
-    item.isSelected = true;
+  const onSelectOrUnselect = (item: TreeDataTypes, isSelect: boolean) => {
+    item.isSelected = isSelect;
     selectAll(item);
     if (
       autoSelectChildren &&
@@ -42,27 +41,8 @@ const useTreeSelect = ({
       isObject(item[childKey]) &&
       !isNull(item[childKey])
     ) {
-      (item[childKey] as Array<TreeDataTypes>)?.map((child: TreeDataTypes) =>
-        onSelect(child)
-      );
-    }
-    reload();
-  };
-
-  /**
-   * This @onUnSelect function will call when checked again checkbox.
-   */
-  const onUnSelect = (item: TreeDataTypes) => {
-    item.isSelected = false;
-    selectAll(item);
-    if (
-      autoSelectChildren &&
-      item[childKey] &&
-      isObject(item[childKey]) &&
-      !isNull(item[childKey])
-    ) {
-      (item[childKey] as Array<TreeDataTypes>)?.map((child: TreeDataTypes) =>
-        onUnSelect(child)
+      (item[childKey] as Array<TreeDataTypes>)?.forEach(
+        (child: TreeDataTypes) => onSelectOrUnselect(child, isSelect)
       );
     }
     reload();
@@ -81,13 +61,16 @@ const useTreeSelect = ({
    * This @selectParentItems function will call when checkbox value is change`s and its update that parent item and reflected in UI.
    */
   const selectParentItems = (item: TreeDataTypes) => {
-    if ((!isEmpty(item?.[childKey]) || item?.[childKey]) ?? [].length === 0) {
-      const check = (item[childKey] as Array<TreeDataTypes>)?.filter(
+    const children = (item?.[childKey] as Array<TreeDataTypes>) ?? [];
+    if (children?.length > 0) {
+      const check = (item[childKey] as Array<TreeDataTypes>).filter(
         (child: TreeDataTypes) => !child?.isSelected
       );
-      item.isSelected = isEmpty(check);
+      item.isSelected = check.length === 0;
     }
-    item?.parent && selectParentItems(item?.parent);
+    if (item.parent) {
+      selectParentItems(item.parent);
+    }
     reload();
   };
 
@@ -95,13 +78,13 @@ const useTreeSelect = ({
    * This @selectChildrenItems function will call when children's value update and reflected in UI.
    */
   const selectChildrenItems = (childData: TreeDataTypes[]) => {
-    childData?.map((item: TreeDataTypes) => {
+    childData.forEach((item: TreeDataTypes) => {
       if (item.isSelected) {
         selectItem.push(item);
       }
-      !isString(item?.[childKey]) &&
-        !isNull(item[childKey]) &&
-        selectChildrenItems((item?.[childKey] as Array<TreeDataTypes>) ?? []);
+      if (Array.isArray(item[childKey])) {
+        selectChildrenItems(item[childKey] as Array<TreeDataTypes>);
+      }
     });
   };
 
@@ -117,9 +100,14 @@ const useTreeSelect = ({
   };
 
   const onPressCheckbox = (item: TreeDataTypes) => {
-    if (!item?.isSelected && autoExpandable)
+    if (!item?.isSelected && autoExpandable) {
       item.isExpanded = !item?.isSelected;
-    !item?.isSelected ? onSelect(item) : onUnSelect(item);
+    }
+    if (!item?.isSelected) {
+      onSelectOrUnselect(item, true);
+    } else {
+      onSelectOrUnselect(item, false);
+    }
     onCheckBoxPress(selectItem);
   };
 
