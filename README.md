@@ -6,7 +6,7 @@
 
 ---
 
-Introducing the Hierarchical Tree Select Control, a high-performance and lightweight library designed to effortlessly render select components with hierarchical tree data. This versatile control not only facilitates the display of work selection but also empowers users to make their own selection.
+Hierarchical Tree Select Control, a high-performance and lightweight library designed to effortlessly render select components with hierarchical tree data. This versatile control not only facilitates the display of work selection but also empowers users to make their own selection.
 
 It is simple to use and fully customizable. It works on both android and iOS platforms.
 
