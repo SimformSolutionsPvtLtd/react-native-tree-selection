@@ -1,6 +1,6 @@
 {
   "name": "react-native-tree-selection",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "A high-performance and lightweight tree selection library for React Native.",
   "main": "lib/index",
   "types": "lib/index.d.ts",
