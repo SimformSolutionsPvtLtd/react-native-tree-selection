@@ -112,13 +112,9 @@ Checkout TreeSelect Example [here](./example/src/App.tsx)
 
 ```jsx
 import React from 'react';
-import {
-  TreeDataTypes,
-  TreeSelect,
-} from 'react-native-tree-selection';
+import { TreeDataTypes, TreeSelect } from 'react-native-tree-selection';
 
 const App = () => {
-
   return (
     <TreeSelect
       data={treeData}
@@ -127,7 +123,6 @@ const App = () => {
       onParentPress={onParentPress}
       onChildPress={onChildPress}
       onCheckBoxPress={onCheckBoxPress}
-    />
     />
   );
 };

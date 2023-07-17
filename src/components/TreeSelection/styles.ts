@@ -6,6 +6,11 @@ const styles = StyleSheet.create({
     color: Colors.white,
     fontSize: moderateScale(18),
   },
+  containerStyle: {
+    margin: moderateScale(20),
+    marginBottom: verticalScale(10),
+    alignItems: 'flex-start',
+  },
   parentStyles: {
     backgroundColor: Colors.parentContainerColor,
     marginTop: verticalScale(5),
