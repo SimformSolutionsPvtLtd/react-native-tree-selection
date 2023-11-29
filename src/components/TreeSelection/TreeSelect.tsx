@@ -42,7 +42,7 @@ const ParentItem = React.memo(
         activeOpacity={touchableActiveOpacity}
         testID={`${item[titleKey]}-parent`}
         onPress={() => showChildren(item)}
-        style={parentContainerStyles ?? styles.parentStyles}>
+        style={[styles.parentStyles, parentContainerStyles]}>
         <TouchableOpacity
           activeOpacity={touchableActiveOpacity}
           testID={`${item[titleKey]}-press`}
