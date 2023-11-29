@@ -248,8 +248,8 @@ const TreeSelect = ({
   return (
     <FlatList
       showsVerticalScrollIndicator={false}
-      {...flatListProps}
       contentContainerStyle={styles.containerStyle}
+      {...flatListProps}
       data={listData}
       renderItem={renderTree}
       keyExtractor={(_item, index) => index.toString()}
