@@ -33,6 +33,7 @@ const ParentItem = React.memo(
     onPressCheckbox,
     showChildren,
     renderIcon,
+    renderItem,
     titleKey,
     childKey,
     touchableActiveOpacity,
@@ -52,9 +53,13 @@ const ParentItem = React.memo(
           style={styles.chevronContainer}>
           {renderIcon(item?.isSelected ?? false, 'child')}
         </TouchableOpacity>
-        <Text style={[styles.text, parentTextStyles]}>
-          {item[titleKey] as string}
-        </Text>
+        {renderItem ? (
+          renderItem(item)
+        ) : (
+          <Text style={[styles.text, parentTextStyles]}>
+            {item[titleKey] as string}
+          </Text>
+        )}
         {Array.isArray(item[childKey]) &&
           (item[childKey] as Array<TreeDataTypes>)?.length > 0 && (
             <View style={styles.chevronContainer}>
@@ -75,6 +80,7 @@ const ChildItem = React.memo(
     titleKey,
     onChildPress,
     renderIcon,
+    renderItem,
     touchableActiveOpacity,
   }: ChildItemTypes) => (
     <TouchableOpacity
@@ -91,9 +97,13 @@ const ChildItem = React.memo(
         style={styles.chevronContainer}>
         {renderIcon(item?.isSelected ?? false, 'child')}
       </TouchableOpacity>
-      <Text style={[styles.text, childTextStyles]}>
-        {item[titleKey] as string}
-      </Text>
+      {renderItem ? (
+        renderItem(item)
+      ) : (
+        <Text style={[styles.text, childTextStyles]}>
+          {item[titleKey] as string}
+        </Text>
+      )}
     </TouchableOpacity>
   )
 );
@@ -118,6 +128,7 @@ const TreeSelect = ({
   renderArrowClosed,
   renderSelect,
   renderUnSelect,
+  renderItem,
   touchableActiveOpacity = 0.7,
   flatListProps,
 }: TreeSelectTypes) => {
@@ -203,6 +214,7 @@ const TreeSelect = ({
               onPressCheckbox,
               showChildren,
               renderIcon,
+              renderItem,
               titleKey,
               childKey,
               touchableActiveOpacity,
@@ -220,6 +232,7 @@ const TreeSelect = ({
               titleKey,
               onChildPress,
               renderIcon,
+              renderItem,
               touchableActiveOpacity,
             }}
           />
