@@ -45,6 +45,7 @@ export type TreeSelectTypes = Partial<{
   onParentPress: (item: TreeDataTypes) => void;
   onChildPress: (item: TreeDataTypes) => void;
   onCheckBoxPress: (item: TreeDataTypes[]) => void;
+  renderItem: (item: TreeDataTypes) => JSX.Element;
   leftIconStyles: StyleProp<ImageStyle>;
   rightIconStyles: StyleProp<ImageStyle>;
   parentContainerStyles: StyleProp<ViewStyle>;
@@ -71,6 +72,7 @@ export interface ChildItemTypes {
   titleKey: string;
   onChildPress: (item: TreeDataTypes) => void;
   renderIcon: (isSelected: boolean, type: string) => JSX.Element;
+  renderItem?: (item: TreeDataTypes) => JSX.Element;
   touchableActiveOpacity: number;
 }
 
@@ -81,6 +83,7 @@ export interface ParentItemTypes {
   onPressCheckbox: (item: TreeDataTypes) => void;
   showChildren: (item: TreeDataTypes) => void;
   renderIcon: (isSelected: boolean, type?: string) => JSX.Element;
+  renderItem?: (item: TreeDataTypes) => JSX.Element;
   titleKey: string;
   childKey: string;
   touchableActiveOpacity: number;
